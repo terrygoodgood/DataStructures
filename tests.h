@@ -1,13 +1,14 @@
 #ifndef TESTS_H
 #define TESTS_H
-#include "linkedlist.h"
-#include "glinkedlist.h"
-#include "dlinkedlist.h"
-#include "clinkedlist.h"
+#include <linkedlist/clinkedlist.h>
+#include <linkedlist/linkedlist.h>
+#include <linkedlist/glinkedlist.h>
+#include <linkedlist/dlinkedlist.h>
 
 
-#include "stack.h"
-#include "lstack.h"
+
+#include "stack/stack.h"
+#include "stack/lstack.h"
 namespace tests{
     namespace LinkedList{
 

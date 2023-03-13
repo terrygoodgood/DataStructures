@@ -1,7 +1,7 @@
 #ifndef LSTACK_H
 #define LSTACK_H
-#include "stack.h"
-#include "glinkedlist.h"
+#include <stack/stack.h>
+#include <stack/lstack.h>
 template <typename T>
 class LStack: public stack<T>, public GNode<T>{
     // LinkedList based stack

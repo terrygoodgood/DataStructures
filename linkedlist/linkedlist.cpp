@@ -8,22 +8,6 @@ linkedlist::linkedlist():head(nullptr){
     cout << "---Linkedlist initiliazed.---" <<endl;
 }
 
-
-//linkedlist::~linkedlist(){
-//    Node** temp = new Node*[10];
-//    int cnt = 0;
-//    while(head){
-//        temp[cnt++] = head;
-//        head = head->next;
-//    }
-//    for(int i = 0; i < cnt; i++){
-//        delete temp[i];
-//    }
-//    delete[] temp;
-//}
-
-
-// This is modified by chatGPT
 linkedlist::~linkedlist(){
     Node* curr = head;
     while (curr) {

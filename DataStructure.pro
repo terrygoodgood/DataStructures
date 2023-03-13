@@ -3,13 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 SOURCES += main.cpp \
-    linkedlist.cpp
+    linkedlist/linkedlist.cpp
 
 HEADERS += \
-    linkedlist.h \
-    glinkedlist.h \
-    tests.h \
-    dlinkedlist.h \
-    clinkedlist.h \
-    stack.h \
-    lstack.h
+    linkedlist/*.h \
+    stack/*.h
