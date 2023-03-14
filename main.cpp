@@ -1,10 +1,5 @@
 #include <iostream>
-
 #include "tests.h"
-
-
-#include <vector>
-
 
 using namespace std;
 
@@ -15,15 +10,12 @@ int main()
     cout << "=====================" << endl;
 
     /// Test for linkedlists
-    tests::LinkedList::TestLinkedlist();
-    tests::LinkedList::TestDoublyLinkedList();
-    tests::LinkedList::TestCircularlyLinkedLists();
+    tests::LinkedList::TestAll();
 
     /// Test for stack
-    tests::Stack::TestArrayBasedStack();
-    tests::Stack::TestLinkedListBasedStack();
+    tests::Stack::TestAll();
 
     /// TODO : Test for queue
-
+    tests::Queue::TestArrayQueue();
     return 0;
 }

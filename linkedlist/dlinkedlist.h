@@ -2,6 +2,10 @@
 #define DLINKEDLIST_H
 
 
+#include "../public_functions.h"
+
+
+
 template<typename T>
 class DNode{
 public:
@@ -25,6 +29,7 @@ public:
 
     void removeFront();
     void removeBack();
+    void virtual test();
 private:
     DNode<T>* head;
     DNode<T>* back;
@@ -137,7 +142,7 @@ const T& DoublyLinkedList<T>::front() const{
 
 
 template<typename T>
-void add(DNode<T>* node, T& e){
+void DoublyLinkedList<T>::add(DNode<T>* node, const T& e){
     DNode<T>* temp = new DNode<T>;
     temp->data = e;
     temp->next = node;
@@ -145,4 +150,15 @@ void add(DNode<T>* node, T& e){
     node->prev->next = temp->prev = temp;
 }
 
+
+template <typename T>
+void DoublyLinkedList<T>::test(){
+    int j = 0;
+    for(int i = 0; i < 10 ; i++){
+        addBack(i);
+        addFront(j);
+    }
+    removeBack();
+    removeFront();
+}
 #endif // DLINKEDLIST_H

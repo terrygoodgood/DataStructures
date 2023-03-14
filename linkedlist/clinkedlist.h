@@ -1,6 +1,12 @@
 #ifndef CLINKEDLIST_H
 #define CLINKEDLIST_H
+
+#include "../public_functions.h"
+
+
 #include "linkedlist.h"
+
+
 template <typename T>
 class CNode{
 public:
@@ -21,17 +27,12 @@ public:
     void add(T& e);
     void remove();
     bool empty();
+    void virtual test();
     CNode<T>* cursor;
 };
 
-
-
-
 template <typename T>
 CircularlyLinkedList<T>::CircularlyLinkedList():cursor(nullptr){}
-
-
-
 
 template <typename T>
 bool CircularlyLinkedList<T>::empty(){
@@ -75,4 +76,16 @@ void CircularlyLinkedList<T>::remove(){
         cursor->next = old->next;
     }
 }
+
+template <typename T>
+void CircularlyLinkedList<T>::test(){
+    for(double i = 1.1; i < 2.0; i+=0.1){
+        add(i);
+    }
+    for(int i = 0; i < 5 ; i++){
+        advance();
+    }
+    remove();
+}
+
 #endif // CLINKEDLIST_H

@@ -1,18 +1,21 @@
 #ifndef STACK_H
 #define STACK_H
 #include <iostream>
+
+#include "../public_functions.h"
+
 template <typename T>
 class stack {
     enum { DEF_CAPACITY = 100 };
 public:
     stack(int capacity = DEF_CAPACITY);
     ~stack();
-    void virtual push(const T& e);
-    void virtual pop();
-    const virtual T& top() const;
-    int size() const;
-    bool virtual empty() const;
-
+    virtual void  push(const T& e, bool test=false);
+    virtual void  pop(bool test= false);
+    virtual const T& top() const;
+    virtual int size() const;
+    virtual bool empty() const;
+    virtual void test();
 private:
     T* S;
     int capacity;
@@ -34,26 +37,43 @@ bool stack<T>::empty() const {
 
 template <typename T>
 const T& stack<T>::top() const {
-    if (empty()) throw std::out_of_range("Stack is empty");
+    if (empty()) cout << "Stack is empty" << endl;
     return S[t];
 }
 
 template <typename T>
-void stack<T>::push(const T& e) {
-    if (size() == capacity) return;
-    t++;
-    S[t] = e;
+void stack<T>::push(const T& e, bool test) {
+    if (size() == capacity) test? TestPrint("Exceed stack size"): ErrorPrint("Exceed stack size");
+    this->t++;
+    S[this->t] = e;
 }
 
 template <typename T>
-void stack<T>::pop() {
-    if (empty()) return;
+void stack<T>::pop(bool test){
+    if (empty()){
+        test ? TestPrint("Pop from empty stack"):ErrorPrint("Pop from empty stack");
+        return;
+    }
     --t;
 }
 
 template <typename T>
 stack<T>::~stack() {
     delete[] S;
+}
+
+template <typename T>
+void stack<T> :: test(){
+
+    TestPrint("Stack");
+
+    for(int i = 0; i < capacity; i++) push(i, true);
+
+    push(99999, true); // Push exceed stack size
+
+    while(!empty()) pop(true);
+
+    pop(true); // Pop from empty stack
 }
 
 #endif // STACK_H

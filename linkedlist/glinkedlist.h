@@ -1,11 +1,13 @@
 #ifndef GLINKEDLIST_H
 #define GLINKEDLIST_H
 
+#include "../public_functions.h"
 
 
 #include <iostream>
 
 using namespace std;
+
 
 /// Generic linkedlist
 template<typename T>  class GNode {
@@ -27,6 +29,7 @@ public:
     void addFront(T& e);
     T& front() const;
     void removeFront();
+    void virtual test();
     GNode<T>* head;
 };
 
@@ -73,5 +76,15 @@ bool Glinkedlist<T>::empty(){
     return head==NULL;
 }
 
-
+template<typename T>
+void Glinkedlist<T>::test(){
+    for(double d = 0.1; d<1.0; d+=0.1){
+        this->addFront(d);
+    }
+    GNode<double>* GLtemp = head;
+    while(head->next!=nullptr){
+        head = head->next;
+    }
+    head = GLtemp;
+}
 #endif // GLINKEDLIST_H
