@@ -7,11 +7,12 @@
 template <typename T>
 class QueueInterface{
 public:
-    virtual int size() const;
-    virtual bool empty() const;
-    virtual const T& front() const;
-    virtual void enqueue(const T& e, bool test=false);
-    virtual void dequeue(bool test = false);
+    virtual int size() const=0;
+    virtual bool empty() const=0;
+    virtual const T& front() const=0;
+    virtual void enqueue(const T& e, bool test=false)=0;
+    virtual void dequeue(bool test = false)=0;
+    virtual void test()=0;
 };
 
 

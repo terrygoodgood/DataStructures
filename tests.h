@@ -15,6 +15,11 @@
 
 /// queues
 #include "queue/ArrayQueue.h"
+#include "queue/DoubleEndedQueue.h"
+
+/// vector
+#include "vector/vector.h"
+
 namespace tests{
 
 
@@ -80,7 +85,32 @@ namespace tests{
         void TestArrayQueue(){
             ArrayQueue<int>* AQ = new ArrayQueue<int>;
             AQ->test();
-//            delete AQ;
+            delete AQ;
+        }
+
+        void TestDoubleEndedQueue(){
+            DoubleEndedQueue<int>* DEQ = new DoubleEndedQueue<int>;
+            DEQ->test();
+            delete DEQ;
+        }
+
+
+
+        void TestAll(){
+            TestArrayQueue();
+            TestDoubleEndedQueue();
+        }
+    }
+
+    namespace Vector{
+        void TestVector(){
+            SelfDefinedVector::vector<int>* SDV = new SelfDefinedVector::vector<int>;
+            SDV->test();
+            delete SDV;
+            SDV = new SelfDefinedVector::vector<int>(1);
+            SDV->testCapacity();
+            delete SDV;
+
         }
     }
 }

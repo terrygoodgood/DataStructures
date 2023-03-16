@@ -15,7 +15,10 @@ int main()
     /// Test for stack
     tests::Stack::TestAll();
 
-    /// TODO : Test for queue
-    tests::Queue::TestArrayQueue();
+    /// Test for queue
+    tests::Queue::TestAll();
+
+    /// TODO : Test for vector
+    tests::Vector::TestVector();
     return 0;
 }

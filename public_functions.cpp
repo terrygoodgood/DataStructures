@@ -14,7 +14,7 @@ using namespace std;
     cout << "\033[1;37mHello, world!\033[0m" << endl; // White color
 */
 void ErrorPrint(string s){
-    cout << endl << "\033[1;31m[ ERROR ]  " << s << "\033[0m" << endl;
+    cout << endl << "\033[1;31m[  ERROR ]  " << s << "\033[0m" << endl;
 }
 
 void TestPassPrint(string s){
@@ -22,5 +22,5 @@ void TestPassPrint(string s){
 }
 
 void TestPrint(string s){
-    cout << endl << "\033[1;34m[ TEST ]  " << s << "\033[0m" << endl;
+    cout << endl << "\033[1;36m[  TEST  ]  " << s << "\033[0m" << endl;
 }

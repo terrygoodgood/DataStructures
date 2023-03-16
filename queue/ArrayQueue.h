@@ -2,19 +2,19 @@
 #define ARRAYQUEUE_H
 
 #include "../public_functions.h"
-
+#include "QueueInterface.h"
 
 template <typename T>
-class ArrayQueue {
+class ArrayQueue : public QueueInterface<T> {
     public:
     ArrayQueue(int cap = 100);
     ~ArrayQueue();
-    int size() const ;
-    bool empty() const  ;
-    const T& front() const ;
-    void enqueue(const T& e, bool test=false);
-    void dequeue(bool test = false);
-    void test();
+    int size() const override;
+    bool empty() const  override;
+    const T& front() const override;
+    void enqueue(const T& e, bool test=false) override;
+    void dequeue(bool test = false) override;
+    void test() override;
 private:
     T* Q;
     int qnum;

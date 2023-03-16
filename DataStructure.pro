@@ -10,5 +10,6 @@ HEADERS += linkedlist/*.h stack/*.h tests.h \
     queue/QueueInterface.h \
     public_functions.h \
     queue/DoubleEndedQueue.h \
-    queue/ArrayQueue.h
+    queue/ArrayQueue.h \
+    vector/vector.h
 TARGET = main.exe
