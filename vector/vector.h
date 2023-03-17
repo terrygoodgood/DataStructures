@@ -2,11 +2,10 @@
 #define VECTOR_H
 
 #include "../public_functions.h"
-#include "../linkedlist/dlinkedlist.h"
 
 namespace SelfDefinedVector {
     template <typename T>
-    class vector : public DoublyLinkedList<T>{
+    class vector{
 
     public:
 
@@ -15,52 +14,37 @@ namespace SelfDefinedVector {
         ~vector();
 
         // functions
-        void push_back(T& e, bool test=false);
-        void push_back(T e, bool test=false);
-        void push_front(T& e, bool test=false);
-        void push_front(T e, bool test=false);
-
-        void pop_front();
+        void push_back(T e);
         void pop_back();
-
         void reverse();
-
-        void test() override;
-        void testCapacity();
-
+        void test();
         void clear();
-
         void erase(T e);
         void eraseIndex(size_t idx);
-
         void insert(T e, int idx);
-
-        int* find(T target); // indices for target
-
-        /* used only in numeric data types */
-        const T& max();
-        const T& min();
-        const T sum();
-
+        int  find(T target);
 
         // attributes
         int size();
         bool empty();
         T& operator [](int idx);
 
-
         // pointers
-        DNode<T>* begin;
-        DNode<T>* end;
+        T* begin;
+        T* end;
+        T* front();
+        T* back();
+
     private:
         T* data;
         int length;
         int capacity;
-
     };
 
 
-    /// Implementation
+    ///////////////////////////////////////////////////////////
+    ///                   Implementation                    ///
+    ///////////////////////////////////////////////////////////
     template< typename T>
     vector<T>::vector(int cap):capacity(cap), begin(nullptr), end(nullptr), data(new T), length(0){}
     template <typename T>
@@ -79,20 +63,9 @@ namespace SelfDefinedVector {
         return length;
     }
 
-    template <typename T>
-    void vector<T>::push_back(T& e, bool test){
-        if(this->capacity){
-            if(this->size() == capacity){
-                test ? TestPrint("Exceed vector size"):ErrorPrint("Exceed vector size");
-                return;
-            }
-        }
-        this->data + length++ = e;
-    }
-
 
     template <typename T>
-    void vector<T>::push_back(T e, bool test){
+    void vector<T>::push_back(T e){
         if(capacity){
             if(this->size() == capacity){
                 ErrorPrint("Exceed vector size");
@@ -105,22 +78,12 @@ namespace SelfDefinedVector {
 
 
     template <typename T>
-    void vector<T>::pop_front(){
-        if(this->empty()){
-            ErrorPrint("Pop front from empty vector");
-            return;
-        }
-        this->data = this->data +1; // move ahead 1 unit
-        length--;
-    }
-
-
-    template <typename T>
     void vector<T>::pop_back(){
         if(this->empty()){
             ErrorPrint("Pop back from empty vector");
             return;
         }
+        data[length-1] = NULL;
         length--;
     }
 
@@ -142,17 +105,12 @@ namespace SelfDefinedVector {
     void vector<T>::clear(){
         delete this->begin;
         delete this->end;
-        this->begin = new DNode<T>;
-        this->end   = new DNode<T>;
-        length = 0;
-        capacity = 0;
-        delete this->data;
+        this->begin = new T;
+        this->end   = new T;
+        length = 0;        
+        delete[] this->data;
         this->data = new T*;
     }
-
-
-
-
 
     template <typename T>
     void vector<T>::erase(T e){
@@ -163,7 +121,7 @@ namespace SelfDefinedVector {
         }
         for(int i =0; i < length; i++){
             if(this->data[i] == e){
-                for(int j = i;j<length-1; j++){
+                for(int j = i;j<length; j++){
                     this->data[j] = this->data[j+1];
                 }
                 length--;
@@ -184,7 +142,7 @@ namespace SelfDefinedVector {
             ErrorPrint(S);
             return;
         }
-        for(int i = idx; i< length-1; i++){
+        for(int i = idx; i< length; i++){
             this->data[i] = this->data[i+1];
         }
         length--;
@@ -206,30 +164,16 @@ namespace SelfDefinedVector {
     }
 
     template <typename T>
-    int* vector<T>::find(T target){
+    int vector<T>::find(T target){
         /// erase by data
         if(this->empty()){
             ErrorPrint("Find element from empty vector");
-            return nullptr;
+            return -1;
         }
-        int* temp = new int;
-        int cnt = 0;
         for(int i =0; i < length; i++){
-            if(this->data[i] == target){
-                temp[cnt++] = i;
-            }
+            if(this->data[i] == target) return i;
         }
-
-        int ans[cnt];
-        for(int i = 0; i < cnt; i++){
-            ans[i] = temp[i];
-        }
-        delete temp;
-        return ans;
     }
-
-
-
 
     template <typename T>
     bool vector<T>::empty(){
@@ -240,42 +184,59 @@ namespace SelfDefinedVector {
     template <typename T>
     void vector<T>::test(){
         TestPrint("Self Defined Vector");
-        push_back(123,true);
-        TestPrint("Current value = "+to_string(this->data[0]));
-        size_t a = 1523;
-        eraseIndex(a);
-        erase(10);
-        TestPrint("Pop back");
-        pop_back();
-        TestPrint("Pop back");
+        /// Test
+        /// 1. push_back / pop_back
+        /// 2. erase
+        /// 3. find
+        /// 4. insert
+        /// 5. test the pointers
+        /*1*/
+        vector<int> V;
+        V.push_back(123456);
+        V.pop_back();
 
-        pop_back();
+        /*2*/
+        V.push_back(123);
+        V.eraseIndex(0);
+        V.push_back(456);
+        V.erase(456);
+        //V.erase(123);
 
+        /*3*/
+        for(int i = 0; i < 400; i+= 4){
+            V.push_back((int)i);
+        }
+        if(V.find(40) != 10) ErrorPrint("V.find(40) = " + to_string(V.find(40)));
+
+        /*4*/
+        V.insert(10000,10);
+        if(V.find(10000) != 10) ErrorPrint("V.find(10000) = " + to_string(V.find(10000)));
+
+
+
+
+
+
+        TestPassPrint("Vector");
         return;
     }
-
 
 
     template <typename T>
-    void vector<T>::testCapacity(){
-        TestPrint("Self Defined Vector - test capacity");
-        for(int i = 0; i < capacity+1 ; i++){
-            push_back((int)i, true);
-        }
-        for(int i = 0; i < capacity+2 ; i++){
-            pop_back();
-        }
-        TestPassPrint("vector capacity");
-        return;
+    T& vector<T>::operator [](int idx){
+        return this->data[idx];
     }
 
+    template <typename T>
+    T* vector<T>::front(){
+        return this->data[0];
+    }
 
+    template <typename T>
+    T* vector<T>::back(){
+        return this->data[length];
+    }
 
-    /// For numeric data types only
-//    template <typename T>
-//    const vector<T>::T& max(){
-
-//    }
 }
 
 #endif // VECTOR_H

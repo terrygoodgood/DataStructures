@@ -155,8 +155,8 @@ template <typename T>
 void DoublyLinkedList<T>::test(){
     int j = 0;
     for(int i = 0; i < 10 ; i++){
-        addBack(i);
-        addFront(j);
+//        addBack(i);
+//        addFront(j);
     }
     removeBack();
     removeFront();

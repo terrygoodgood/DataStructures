@@ -104,13 +104,8 @@ namespace tests{
 
     namespace Vector{
         void TestVector(){
-            SelfDefinedVector::vector<int>* SDV = new SelfDefinedVector::vector<int>;
-            SDV->test();
-            delete SDV;
-            SDV = new SelfDefinedVector::vector<int>(1);
-            SDV->testCapacity();
-            delete SDV;
-
+            SelfDefinedVector::vector<int> SDV;
+            SDV.test();
         }
     }
 }
