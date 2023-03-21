@@ -1,5 +1,5 @@
 *.log
 .obj
 Makefile
-main.exe
+*.exe
 
