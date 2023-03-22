@@ -19,7 +19,7 @@
 
 /// vector
 #include "vector/vector.h"
-
+#include "vector/nodelist.h"
 namespace tests{
 
 
