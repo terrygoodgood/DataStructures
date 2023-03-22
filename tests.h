@@ -104,7 +104,7 @@ namespace tests{
 
     namespace Vector{
         void TestVector(){
-            SelfDefinedVector::vector<int> SDV;
+            SelfDefinedVector::vector<int> SDV(1000);
             SDV.test();
         }
     }

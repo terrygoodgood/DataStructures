@@ -1,5 +1,6 @@
 #ifndef VECTOR_H
 #define VECTOR_H
+#include <cassert>
 
 #include "../public_functions.h"
 
@@ -9,8 +10,7 @@ namespace SelfDefinedVector {
 
     public:
 
-        vector(int cap);
-        vector();
+        vector(int cap=10);
         ~vector();
 
         // functions
@@ -30,13 +30,13 @@ namespace SelfDefinedVector {
         T& operator [](int idx);
 
         // pointers
-        T* begin;
-        T* end;
-        T* front();
-        T* back();
+        const T* front();
+        const T* back();
 
     private:
-        T* data;
+        T** data; // pointer array
+        T* begin;
+        T* end;
         int length;
         int capacity;
     };
@@ -46,16 +46,12 @@ namespace SelfDefinedVector {
     ///                   Implementation                    ///
     ///////////////////////////////////////////////////////////
     template< typename T>
-    vector<T>::vector(int cap):capacity(cap), begin(nullptr), end(nullptr), data(new T), length(0){}
-    template <typename T>
-    vector<T>::vector():capacity(0),begin(nullptr), end(nullptr),data(new T), length(0){}
+    vector<T>::vector(int cap):capacity(cap), begin(new T), end(new T), data(new T*[cap]), length(0){}
 
 
     template <typename T>
     vector<T>::~vector(){
-        delete this->data;
-        delete this->begin;
-        delete this->end;
+        delete[] data;
     }
 
     template <typename T>
@@ -67,64 +63,70 @@ namespace SelfDefinedVector {
     template <typename T>
     void vector<T>::push_back(T e){
         if(capacity){
-            if(this->size() == capacity){
+            if(size() == capacity){
                 ErrorPrint("Exceed vector size");
                 return;
             }
         }
-        this->data[length] = e;
+        T* temp = new T;
+        *temp = e;
+        data[length] = temp;
+        begin = data[0];
+        end   = data[length];
         length++;
     }
 
-
     template <typename T>
     void vector<T>::pop_back(){
-        if(this->empty()){
+        if(empty()){
             ErrorPrint("Pop back from empty vector");
             return;
         }
-        data[length-1] = NULL;
-        length--;
+        delete data[--length] ;
+        begin = data[0];
+        end   = data[length-1];
     }
 
 
 
     template <typename T>
     void vector<T>::reverse(){
-        T* newdata = new T*;
-        for(int i = 0; i > length; i++){
-            newdata[i] = this->data[length-1 - i];
+        T** newdata = new T*[length];
+        for(int i = 0; i < length; i++){
+            newdata[i] = data[length-1-i];
         }
-        delete this->data;
-        this->data = newdata;
-        delete newdata;
+        delete[] data;
+        data = newdata;
+        begin = data[0];
+        end   = data[length-1];
     }
 
 
     template <typename T>
     void vector<T>::clear(){
-        delete this->begin;
-        delete this->end;
-        this->begin = new T;
-        this->end   = new T;
-        length = 0;        
-        delete[] this->data;
-        this->data = new T*;
+        delete data;
+
+        data = new T*[capacity];
+        begin = data[0];
+        end = data[0];
+        length = 0;
     }
 
     template <typename T>
     void vector<T>::erase(T e){
         /// erase by data
-        if(this->empty()){
+        if(empty()){
             ErrorPrint("Erase element from empty vector");
             return;
         }
         for(int i =0; i < length; i++){
-            if(this->data[i] == e){
+            if(*data[i] == e){
                 for(int j = i;j<length; j++){
-                    this->data[j] = this->data[j+1];
+                    data[j] = data[j+1];
                 }
                 length--;
+                begin = data[0];
+                end   = data[length-1];
                 return;
             }
         }
@@ -133,7 +135,7 @@ namespace SelfDefinedVector {
     template <typename T>
     void vector<T>::eraseIndex(size_t idx){
         /// erase by index
-        if(this->empty()){
+        if(empty()){
             ErrorPrint("Erase element from empty vector");
             return;
         }
@@ -143,36 +145,46 @@ namespace SelfDefinedVector {
             return;
         }
         for(int i = idx; i< length; i++){
-            this->data[i] = this->data[i+1];
+            data[i] = data[i+1];
         }
         length--;
+        begin = data[0];
+        end   = data[length-1];
     }
 
 
     template <typename T>
     void vector<T>::insert(T e, int idx){
-        if(capacity){
-            if(this->size() == capacity){
-                ErrorPrint("Insert to full vector");
-                return;
+
+        if(size() == capacity){
+            ErrorPrint("Insert to full vector");
+            return;
+        }
+
+        if(length > idx){
+            for(int i = idx; i < length; i++){
+                data[i+1] = data[i];
             }
-        }
-        for(int i = idx+1; i < length; i++){
-            this->data[i] = this->data[i-1];
-        }
-        this->data[idx] = e;
+        }else idx = length;
+        T* temp = new T;
+        *temp = e;
+        length++;
+        data[idx] = temp;
+        begin = data[0];
+        end   = data[length-1];
     }
 
     template <typename T>
     int vector<T>::find(T target){
         /// erase by data
-        if(this->empty()){
+        if(empty()){
             ErrorPrint("Find element from empty vector");
-            return -1;
+        }else{
+            for(int i =0; i < length; i++){
+                if(*data[i] == target) return i;
+            }
         }
-        for(int i =0; i < length; i++){
-            if(this->data[i] == target) return i;
-        }
+        return -1;
     }
 
     template <typename T>
@@ -181,60 +193,98 @@ namespace SelfDefinedVector {
     }
 
 
+
     template <typename T>
     void vector<T>::test(){
-        TestPrint("Self Defined Vector");
-        /// Test
-        /// 1. push_back / pop_back
-        /// 2. erase
-        /// 3. find
-        /// 4. insert
-        /// 5. test the pointers
-        /*1*/
-        vector<int> V;
-        V.push_back(123456);
-        V.pop_back();
+        TestPrint("vector");
+        // Test constructors and basic operations
+        TestPrint("constructors and basic operations");
+        vector<int> v;
+        assert(v.size() == 0);
+        assert(v.empty());
 
-        /*2*/
-        V.push_back(123);
-        V.eraseIndex(0);
-        V.push_back(456);
-        V.erase(456);
-        //V.erase(123);
+        v.push_back(1);
+        v.push_back(2);
+        v.push_back(3);
+        assert(v.size() == 3);
+        assert(v[0] == 1);
+        assert(v[1] == 2);
+        assert(v[2] == 3);
 
-        /*3*/
-        for(int i = 0; i < 400; i+= 4){
-            V.push_back((int)i);
-        }
-        if(V.find(40) != 10) ErrorPrint("V.find(40) = " + to_string(V.find(40)));
+        v.pop_back();
+        assert(v.size() == 2);
+        assert(v[0] == 1);
+        assert(v[1] == 2);
 
-        /*4*/
-        V.insert(10000,10);
-        if(V.find(10000) != 10) ErrorPrint("V.find(10000) = " + to_string(V.find(10000)));
+        // Test clear and insert
+        TestPrint("clear and insert");
+        v.clear();
+        assert(v.size() == 0);
 
+        v.insert(1, 0);
+        assert(v.size() == 1);
+        assert(v[0] == 1);
 
+        v.insert(3, 1);
+        assert(v.size() == 2);
+        assert(v[0] == 1);
+        assert(v[1] == 3);
 
+        v.insert(2, 1);
+        assert(v.size() == 3);
+        assert(v[0] == 1);
+        assert(v[1] == 2);
+        assert(v[2] == 3);
 
+        // Test erase
+        TestPrint("erase");
+        v.erase(2);
+        assert(v.size() == 2);
+        assert(v[0] == 1);
+        assert(v[1] == 3);
 
+        v.eraseIndex(0);
+        assert(v.size() == 1);
+        assert(v[0] == 3);
 
-        TestPassPrint("Vector");
-        return;
+        // Test find
+        TestPrint("find");
+        v.push_back(4);
+        v.push_back(5);
+        assert(v.find(4) == 1);
+        assert(v.find(6) == -1);
+
+        // Test pointers
+        TestPrint("pointers front() & back()");
+        const int* ptr1 = v.front();
+        const int* ptr2 = v.back();
+        assert(*ptr1 == 3);
+        assert(*ptr2 == 5);
+
+        // Test reverse
+        TestPrint("reverse");
+        v.reverse();
+        assert(v.size() == 3);
+        assert(v[0] == 5);
+        assert(v[1] == 4);
+        assert(v[2] == 3);
+
+        TestPassPrint("vector");
     }
-
 
     template <typename T>
     T& vector<T>::operator [](int idx){
-        return this->data[idx];
+        return **(data+idx);
     }
 
     template <typename T>
-    T* vector<T>::front(){
-        return this->data[0];
+    const T* vector<T>::front(){
+        return begin;
     }
 
     template <typename T>
-    T* vector<T>::back(){
-        return this->data[length];
+    const T* vector<T>::back(){
+        return end;
     }
 
 }
