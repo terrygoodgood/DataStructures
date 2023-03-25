@@ -8,7 +8,7 @@ int main()
     cout << "   Data  Structure   " << endl;
     cout << "=====================" << endl;
 
-    /// Test for linkedlists
+    /// Test for linkedlist
     tests::LinkedList::TestAll();
 
     /// Test for stack
@@ -17,7 +17,9 @@ int main()
     /// Test for queue
     tests::Queue::TestAll();
 
-    /// TODO : Test for vector
-    tests::Vector::TestVector();
+    /// Test for vector
+    tests::Vector::TestAll();
+
+    /// TODO : Test for tree
     return 0;
 }

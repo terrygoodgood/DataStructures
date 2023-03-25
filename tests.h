@@ -20,6 +20,8 @@
 /// vector
 #include "vector/vector.h"
 #include "vector/nodelist.h"
+#include "vector/nodesequence.h"
+
 namespace tests{
 
 
@@ -107,6 +109,25 @@ namespace tests{
             SelfDefinedVector::vector<int> SDV(1000);
             SDV.test();
         }
+        void TestNodeList(){
+            NodeList<int> NL;
+            NL.test();
+        }
+        void TestNodeSequence(){
+            NodeSequence<int> NS;
+            NS.test();
+        }
+        void TestAll(){
+            TestVector();
+            TestNodeList();
+            TestNodeSequence();
+        }
+    }
+
+    namespace Tree{
+    void TestGeneralTree(){
+
+    }
     }
 }
 
